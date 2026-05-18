@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
     docker.vm.hostname = "docker-jenkins"
     docker.vm.provider "virtualbox" do |vb|
       vb.memory = 8192
-      vb.cpus = 4
+      vb.cpus = 2
     end
     docker.vm.network "private_network", ip: "192.168.56.100"
 
