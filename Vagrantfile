@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu64/noble64"
   config.vbguest.auto_update = false if Vagrant.has_plugin?("vagrant-vbguest")
 
-  # ---------- Machine Docker-Jenkins ----------
+# ---------- Machine Docker-Jenkins -------------------- #
   config.vm.define "docker-jenkins" do |docker|
     docker.vm.hostname = "docker-jenkins"
     docker.vm.provider "virtualbox" do |vb|
@@ -73,8 +73,8 @@ Vagrant.configure(2) do |config|
       echo "Provisioning de docker-jenkins terminé !"
     SHELL
   end
-  # -------------------------------------------
 
+# ---------- Cluster Kubernetes -------------------- #
   boxes.each do |opts|
     config.vm.define opts[:name] do |node|
       node.vm.hostname = opts[:name]
@@ -88,9 +88,8 @@ Vagrant.configure(2) do |config|
 
       node.vm.network :private_network, ip: opts[:eth1]
 
+# ---------- Cluster Kubernetes -------------------- #
       node.vm.provision "shell", inline: <<-SHELL
-        # provision all nodes
-        ############################################################
         apt --allow-unauthenticated update
         apt --allow-unauthenticated install -y bash-completion binutils
         echo 'colorscheme ron' >> ~/.vimrc
@@ -140,7 +139,7 @@ Vagrant.configure(2) do |config|
         sudo rm -f /swap.img
       SHELL
 
-      # Provision only control-plane
+ # Provision control-plane
       if opts[:name] == "kube-control-plane"
         node.vm.provision "shell", inline: <<-SHELL
           # Install Kubectl
